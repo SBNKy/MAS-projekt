@@ -80,7 +80,7 @@ public class Receptionist extends ObjectPlusPlus {
         List<Room> rooms = new ArrayList<>();
 
         try {
-            ObjectPlusPlus[] links = hotelObject.getLinks(HotelObject.ROLE_OWNS);
+            ObjectPlusPlus[] links = hotelObject.getLinks("owns");
 
             for (ObjectPlusPlus object : links) {
                 rooms.add((Room) object);

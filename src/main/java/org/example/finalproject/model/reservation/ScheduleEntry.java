@@ -10,11 +10,6 @@ public class ScheduleEntry extends ObjectPlusPlus {
     @Serial
     private static final long serialVersionUID = 6370122498101176909L;
 
-    public static final String ROLE_RESERVATION = "reservation";
-    public static final String ROLE_RESERVATION_SCHEDULE_ENTRIES = "scheduleEntries";
-    public static final String ROLE_ROOM = "room";
-    public static final String ROLE_ROOM_SCHEDULE_ENTRIES = "scheduleEntries";
-
     private LocalDate dateFrom;
     private LocalDate dateTo;
 
@@ -32,8 +27,8 @@ public class ScheduleEntry extends ObjectPlusPlus {
         this.dateFrom = dateFrom;
         this.dateTo = dateTo;
 
-        addLink(ROLE_RESERVATION, ROLE_RESERVATION_SCHEDULE_ENTRIES, reservation);
-        addLink(ROLE_ROOM, ROLE_ROOM_SCHEDULE_ENTRIES, room);
+        addLink("reservation", "scheduleEntries", reservation);
+        addLink("room", "scheduleEntries", room);
     }
 
     public boolean checkAvailability(LocalDate dateFrom, LocalDate dateTo) {

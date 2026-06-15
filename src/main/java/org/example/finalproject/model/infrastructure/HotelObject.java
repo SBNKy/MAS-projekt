@@ -13,9 +13,6 @@ public class HotelObject extends ObjectPlusPlus {
     @Serial
     private static final long serialVersionUID = 4189076975142036128L;
 
-    public static final String ROLE_OWNS = "owns";
-    public static final String ROLE_BELONGS_TO = "belongsTo";
-
     private String name;
     private String address;
     private int starRating;
@@ -29,14 +26,14 @@ public class HotelObject extends ObjectPlusPlus {
     public HotelRoom addHotelRoom(int number, int floor, int area, double dailyRate, int numberOfBeds,
                                   RoomStandard roomStandard) throws Exception {
         HotelRoom room = new HotelRoom(number, floor, area, dailyRate, numberOfBeds, roomStandard, this);
-        this.addPart(ROLE_OWNS, ROLE_BELONGS_TO, room);
+        this.addPart("owns", "belongsTo", room);
 
         return room;
     }
 
     public ConferenceRoom addConferenceRoom(int number, int floor, int area, double hourlyRate, int capacity) throws Exception {
         ConferenceRoom room = new ConferenceRoom(number, floor, area, hourlyRate, capacity, this);
-        this.addPart(ROLE_OWNS, ROLE_BELONGS_TO, room);
+        this.addPart("owns", "belongsTo", room);
 
         return room;
     }
@@ -69,7 +66,7 @@ public class HotelObject extends ObjectPlusPlus {
         List<Room> availableRooms = new ArrayList<>();
 
         try {
-            ObjectPlusPlus[] rooms = getLinks(ROLE_OWNS);
+            ObjectPlusPlus[] rooms = getLinks("owns");
 
             for (ObjectPlusPlus object : rooms) {
                 Room room = (Room) object;
@@ -116,7 +113,7 @@ public class HotelObject extends ObjectPlusPlus {
     @Override
     public void destroy() {
         try {
-            ObjectPlusPlus[] rooms = this.getLinks(ROLE_OWNS);
+            ObjectPlusPlus[] rooms = this.getLinks("owns");
 
             if (rooms != null) {
                 for (ObjectPlusPlus obj : rooms) {

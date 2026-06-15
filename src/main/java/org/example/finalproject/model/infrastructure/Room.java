@@ -10,8 +10,6 @@ public abstract class Room extends ObjectPlusPlus {
     @Serial
     private static final long serialVersionUID = 3784983895542012228L;
 
-    public static final String ROLE_SCHEDULE_ENTRIES = "scheduleEntries";
-
     private int roomNumber;
     private int floor;
     private int area;
@@ -36,7 +34,7 @@ public abstract class Room extends ObjectPlusPlus {
         ScheduleEntry.validateDateRange(dateFrom, dateTo);
 
         try {
-            ObjectPlusPlus[] entries = getLinks(ROLE_SCHEDULE_ENTRIES);
+            ObjectPlusPlus[] entries = getLinks("scheduleEntries");
 
             for (ObjectPlusPlus object : entries) {
                 ScheduleEntry entry = (ScheduleEntry) object;

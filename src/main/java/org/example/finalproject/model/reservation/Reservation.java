@@ -12,13 +12,6 @@ public class Reservation extends ObjectPlusPlus {
     @Serial
     private static final long serialVersionUID = -1397821675645257157L;
 
-    public static final String ROLE_CLIENT = "client";
-    public static final String ROLE_CLIENT_RESERVATIONS = "reservations";
-    public static final String ROLE_RECEPTIONIST = "receptionist";
-    public static final String ROLE_RECEPTIONIST_RESERVATIONS = "handledReservations";
-    public static final String ROLE_SCHEDULE_ENTRIES = "scheduleEntries";
-    public static final String ROLE_SCHEDULE_ENTRY_RESERVATION = "reservation";
-
     private ReservationStatus reservationStatus;
     private LocalDate submissionDate;
     private String invoiceNumber;
@@ -44,8 +37,8 @@ public class Reservation extends ObjectPlusPlus {
         this.invoiceCreationDate = null;
         this.comment = "None";
 
-        addLink(ROLE_CLIENT, ROLE_CLIENT_RESERVATIONS, client);
-        addLink(ROLE_RECEPTIONIST, ROLE_RECEPTIONIST_RESERVATIONS, receptionist);
+        addLink("client", "reservations", client);
+        addLink("receptionist", "handledReservations", receptionist);
     }
 
     public ScheduleEntry reserveRoom(Room room, LocalDate dateFrom, LocalDate dateTo) {
