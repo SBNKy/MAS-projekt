@@ -1,8 +1,11 @@
 package org.example.finalproject.model;
 
+import org.example.finalproject.model.reservation.Reservation;
 import org.example.finalproject.util.ObjectPlusPlus;
 
 import java.io.Serial;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Client extends ObjectPlusPlus {
     @Serial
@@ -61,5 +64,21 @@ public class Client extends ObjectPlusPlus {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public List<Reservation> getReservations() {
+        List<Reservation> reservations = new ArrayList<>();
+
+        try {
+            ObjectPlusPlus[] links = getLinks("reservations");
+
+            for (ObjectPlusPlus object : links) {
+                reservations.add((Reservation) object);
+            }
+        } catch (Exception ignored) {
+            return reservations;
+        }
+
+        return reservations;
     }
 }
