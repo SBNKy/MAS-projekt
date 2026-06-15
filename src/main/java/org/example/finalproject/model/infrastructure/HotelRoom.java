@@ -10,7 +10,8 @@ public class HotelRoom extends Room {
     private int numberOfBeds;
     private RoomStandard roomStandard;
 
-    public HotelRoom(int roomNumber, int floor, int area, double dailyRate, int numberOfBeds, RoomStandard roomStandard, HotelObject hotelObject) {
+    public HotelRoom(int roomNumber, int floor, int area, double dailyRate, int numberOfBeds,
+                     RoomStandard roomStandard, HotelObject hotelObject) {
         super(roomNumber, floor, area, hotelObject);
         this.numberOfBeds = numberOfBeds;
         this.roomStandard = roomStandard;
@@ -21,6 +22,7 @@ public class HotelRoom extends Room {
         if (newDailyRate < 0) {
             throw new IllegalArgumentException("Daily rate can't be lower than 0.");
         }
+
         dailyRate = newDailyRate;
     }
 }

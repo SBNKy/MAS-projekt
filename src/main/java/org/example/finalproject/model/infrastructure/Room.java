@@ -4,7 +4,7 @@ import org.example.finalproject.util.ObjectPlusPlus;
 
 import java.io.Serial;
 
-public class Room extends ObjectPlusPlus {
+public abstract class Room extends ObjectPlusPlus {
     @Serial
     private static final long serialVersionUID = 3784983895542012228L;
 

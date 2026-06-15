@@ -9,7 +9,8 @@ public class ConferenceRoom extends Room {
     private double hourlyRate;
     private int capacity;
 
-    public ConferenceRoom(int roomNumber, int floor, int area, HotelObject hotelObject, double hourlyRate, int capacity) {
+    public ConferenceRoom(int roomNumber, int floor, int area, double hourlyRate, int capacity,
+                          HotelObject hotelObject) {
         super(roomNumber, floor, area, hotelObject);
         changeHourlyRate(hourlyRate);
         this.capacity = capacity;
