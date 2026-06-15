@@ -3,6 +3,7 @@ package org.example.finalproject.model.user;
 import org.example.finalproject.model.Client;
 import org.example.finalproject.model.reservation.Reservation;
 import org.example.finalproject.model.reservation.ReservationStatus;
+import org.example.finalproject.model.reservation.ScheduleEntry;
 import org.example.finalproject.model.infrastructure.HotelObject;
 import org.example.finalproject.model.infrastructure.Room;
 import org.example.finalproject.util.ObjectPlusPlus;
@@ -39,12 +40,64 @@ public class Receptionist extends ObjectPlusPlus {
 
     }
 
+    public Reservation organizeStay(Client client, List<Room> rooms, LocalDate dateFrom, LocalDate dateTo) {
+        if (client == null) {
+            throw new IllegalArgumentException("Client cannot be null.");
+        }
+        if (rooms == null || rooms.isEmpty()) {
+            throw new IllegalArgumentException("At least one room must be selected.");
+        }
+
+        ScheduleEntry.validateDateRange(dateFrom, dateTo);
+
+        for (Room room : rooms) {
+            if (room == null) {
+                throw new IllegalArgumentException("Selected rooms cannot contain null values.");
+            }
+            if (!room.isAvailable(dateFrom, dateTo)) {
+                throw new IllegalArgumentException("Selected room is not available in the selected period.");
+            }
+        }
+
+        Reservation reservation = new Reservation(client, this, LocalDate.now());
+
+        for (Room room : rooms) {
+            reservation.reserveRoom(room, dateFrom, dateTo);
+        }
+
+        return reservation;
+    }
+
     public void changeReservationStatus(Reservation reservation, ReservationStatus reservationStatus) {
 
     }
 
     public List<Room> findResources(HotelObject hotelObject) {
-        return new ArrayList<>();
+        if (hotelObject == null) {
+            throw new IllegalArgumentException("Hotel object cannot be null.");
+        }
+
+        List<Room> rooms = new ArrayList<>();
+
+        try {
+            ObjectPlusPlus[] links = hotelObject.getLinks("owns");
+
+            for (ObjectPlusPlus object : links) {
+                rooms.add((Room) object);
+            }
+        } catch (Exception ignored) {
+            return rooms;
+        }
+
+        return rooms;
+    }
+
+    public List<Room> findResources(HotelObject hotelObject, LocalDate dateFrom, LocalDate dateTo) {
+        if (hotelObject == null) {
+            throw new IllegalArgumentException("Hotel object cannot be null.");
+        }
+
+        return hotelObject.findAvailableRooms(dateFrom, dateTo);
     }
 
     public String getName() {

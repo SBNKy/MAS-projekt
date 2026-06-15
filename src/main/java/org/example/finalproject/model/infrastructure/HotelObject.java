@@ -1,9 +1,12 @@
 package org.example.finalproject.model.infrastructure;
 
+import org.example.finalproject.model.reservation.ScheduleEntry;
+import org.example.finalproject.util.ObjectPlus;
 import org.example.finalproject.util.ObjectPlusPlus;
 
 import java.io.Serial;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class HotelObject extends ObjectPlusPlus {
@@ -40,7 +43,43 @@ public class HotelObject extends ObjectPlusPlus {
     }
 
     public static List<HotelObject> findAvailableHotels(LocalDate from, LocalDate to) {
-        throw new UnsupportedOperationException();
+        ScheduleEntry.validateDateRange(from, to);
+
+        List<HotelObject> availableHotels = new ArrayList<>();
+
+        try {
+            for (HotelObject hotelObject : ObjectPlus.getExtent(HotelObject.class)) {
+                if (!hotelObject.findAvailableRooms(from, to).isEmpty()) {
+                    availableHotels.add(hotelObject);
+                }
+            }
+        } catch (ClassNotFoundException ignored) {
+            return availableHotels;
+        }
+
+        return availableHotels;
+    }
+
+    public List<Room> findAvailableRooms(LocalDate from, LocalDate to) {
+        ScheduleEntry.validateDateRange(from, to);
+
+        List<Room> availableRooms = new ArrayList<>();
+
+        try {
+            ObjectPlusPlus[] rooms = getLinks("owns");
+
+            for (ObjectPlusPlus object : rooms) {
+                Room room = (Room) object;
+
+                if (room.isAvailable(from, to)) {
+                    availableRooms.add(room);
+                }
+            }
+        } catch (Exception ignored) {
+            return availableRooms;
+        }
+
+        return availableRooms;
     }
 
     public String getName() {
