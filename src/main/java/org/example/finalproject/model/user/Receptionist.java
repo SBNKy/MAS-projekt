@@ -1,8 +1,8 @@
 package org.example.finalproject.model.user;
 
 import org.example.finalproject.model.Client;
-import org.example.finalproject.model.Reservation;
-import org.example.finalproject.model.ReservationStatus;
+import org.example.finalproject.model.reservation.Reservation;
+import org.example.finalproject.model.reservation.ReservationStatus;
 import org.example.finalproject.model.infrastructure.HotelObject;
 import org.example.finalproject.model.infrastructure.Room;
 import org.example.finalproject.util.ObjectPlusPlus;

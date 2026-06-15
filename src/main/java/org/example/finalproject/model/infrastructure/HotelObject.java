@@ -17,24 +17,20 @@ public class HotelObject extends ObjectPlusPlus {
     public HotelObject(String name, String address, int starRating) {
         this.name = name;
         this.address = address;
-
-        if (starRating < 1 || starRating > 5) {
-            throw new IllegalArgumentException("Star rating must be between 1 and 5.");
-        }
-        this.starRating = starRating;
+        setStarRating(starRating);
     }
 
     public HotelRoom addHotelRoom(int number, int floor, int area, double dailyRate, int numberOfBeds,
                                   RoomStandard roomStandard) throws Exception {
         HotelRoom room = new HotelRoom(number, floor, area, dailyRate, numberOfBeds, roomStandard, this);
-        this.addPart("owns", "is_in", room);
+        this.addPart("owns", "belongsTo", room);
 
         return room;
     }
 
     public ConferenceRoom addConferenceRoom(int number, int floor, int area, double hourlyRate, int capacity) throws Exception {
         ConferenceRoom room = new ConferenceRoom(number, floor, area, hourlyRate, capacity, this);
-        this.addPart("owns", "is_in", room);
+        this.addPart("owns", "belongsTo", room);
 
         return room;
     }
@@ -51,12 +47,28 @@ public class HotelObject extends ObjectPlusPlus {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getAddress() {
         return address;
     }
 
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
     public int getStarRating() {
         return starRating;
+    }
+
+    public void setStarRating(int starRating) {
+        if (starRating < 1 || starRating > 5) {
+            throw new IllegalArgumentException("Star rating must be between 1 and 5.");
+        }
+
+        this.starRating = starRating;
     }
 
     @Override
