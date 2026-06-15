@@ -74,23 +74,79 @@ public class Reservation extends ObjectPlusPlus {
     }
 
     public Client getClient() {
-        return getSingleLinkedObject("client", Client.class);
+        try {
+            ObjectPlusPlus[] links = getLinks("client");
+
+            if (links.length > 0) {
+                return (Client) links[0];
+            }
+        } catch (Exception ignored) {
+            throw new IllegalStateException("Missing required link: client");
+        }
+
+        throw new IllegalStateException("Missing required link: client");
     }
 
     public Receptionist getReceptionist() {
-        return getSingleLinkedObject("receptionist", Receptionist.class);
+        try {
+            ObjectPlusPlus[] links = getLinks("receptionist");
+
+            if (links.length > 0) {
+                return (Receptionist) links[0];
+            }
+        } catch (Exception ignored) {
+            throw new IllegalStateException("Missing required link: receptionist");
+        }
+
+        throw new IllegalStateException("Missing required link: receptionist");
     }
 
     public List<ScheduleEntry> getScheduleEntries() {
-        return getLinkedObjects("scheduleEntries", ScheduleEntry.class);
+        List<ScheduleEntry> scheduleEntries = new ArrayList<>();
+
+        try {
+            ObjectPlusPlus[] links = getLinks("scheduleEntries");
+
+            for (ObjectPlusPlus object : links) {
+                scheduleEntries.add((ScheduleEntry) object);
+            }
+        } catch (Exception ignored) {
+            return scheduleEntries;
+        }
+
+        return scheduleEntries;
     }
 
     public List<Payment> getPayments() {
-        return getLinkedObjects("payments", Payment.class);
+        List<Payment> payments = new ArrayList<>();
+
+        try {
+            ObjectPlusPlus[] links = getLinks("payments");
+
+            for (ObjectPlusPlus object : links) {
+                payments.add((Payment) object);
+            }
+        } catch (Exception ignored) {
+            return payments;
+        }
+
+        return payments;
     }
 
     public List<OrderItem> getOrderItems() {
-        return getLinkedObjects("orderItems", OrderItem.class);
+        List<OrderItem> orderItems = new ArrayList<>();
+
+        try {
+            ObjectPlusPlus[] links = getLinks("orderItems");
+
+            for (ObjectPlusPlus object : links) {
+                orderItems.add((OrderItem) object);
+            }
+        } catch (Exception ignored) {
+            return orderItems;
+        }
+
+        return orderItems;
     }
 
     public ReservationStatus getReservationStatus() {
@@ -111,31 +167,5 @@ public class Reservation extends ObjectPlusPlus {
 
     public String getComment() {
         return comment;
-    }
-
-    private <T> T getSingleLinkedObject(String roleName, Class<T> type) {
-        List<T> objects = getLinkedObjects(roleName, type);
-
-        if (objects.isEmpty()) {
-            throw new IllegalStateException("Missing required link: " + roleName);
-        }
-
-        return objects.get(0);
-    }
-
-    private <T> List<T> getLinkedObjects(String roleName, Class<T> type) {
-        List<T> result = new ArrayList<>();
-
-        try {
-            ObjectPlusPlus[] links = getLinks(roleName);
-
-            for (ObjectPlusPlus object : links) {
-                result.add(type.cast(object));
-            }
-        } catch (Exception ignored) {
-            return result;
-        }
-
-        return result;
     }
 }
