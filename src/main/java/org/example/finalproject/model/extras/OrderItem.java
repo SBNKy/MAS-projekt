@@ -1,5 +1,6 @@
 package org.example.finalproject.model.extras;
 
+import org.example.finalproject.model.reservation.Reservation;
 import org.example.finalproject.util.ObjectPlusPlus;
 
 import java.io.Serial;
@@ -26,19 +27,36 @@ public class OrderItem extends ObjectPlusPlus {
         this.addLink("refersTo", "includedIn", service);
     }
 
-    public double calculatePrice() {
+    public Reservation getReservation() {
         try {
-            ObjectPlusPlus[] links = this.getLinks("refersTo");
+            ObjectPlusPlus[] links = getLinks("reservation");
 
-            if (links != null && links.length > 0) {
-                AdditionalService service = (AdditionalService) links[0];
-                return this.quantity * service.getPrice();
+            if (links.length > 0) {
+                return (Reservation) links[0];
             }
-        } catch (Exception e) {
-            System.err.println("Error: " + e.getMessage());
+        } catch (Exception ignored) {
+            throw new IllegalStateException("Order item is not assigned to a reservation.");
         }
 
-        return 0;
+        throw new IllegalStateException("Order item is not assigned to a reservation.");
+    }
+
+    public AdditionalService getAdditionalService() {
+        try {
+            ObjectPlusPlus[] links = getLinks("refersTo");
+
+            if (links.length > 0) {
+                return (AdditionalService) links[0];
+            }
+        } catch (Exception ignored) {
+            throw new IllegalStateException("Order item is not assigned to an additional service.");
+        }
+
+        throw new IllegalStateException("Order item is not assigned to an additional service.");
+    }
+
+    public double calculatePrice() {
+        return this.quantity * getAdditionalService().getPrice();
     }
 
     @Override

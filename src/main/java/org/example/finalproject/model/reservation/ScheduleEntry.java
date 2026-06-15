@@ -35,6 +35,34 @@ public class ScheduleEntry extends ObjectPlusPlus {
         return !overlaps(dateFrom, dateTo);
     }
 
+    public Reservation getReservation() {
+        try {
+            ObjectPlusPlus[] links = getLinks("reservation");
+
+            if (links.length > 0) {
+                return (Reservation) links[0];
+            }
+        } catch (Exception ignored) {
+            throw new IllegalStateException("Schedule entry is not assigned to a reservation.");
+        }
+
+        throw new IllegalStateException("Schedule entry is not assigned to a reservation.");
+    }
+
+    public Room getRoom() {
+        try {
+            ObjectPlusPlus[] links = getLinks("room");
+
+            if (links.length > 0) {
+                return (Room) links[0];
+            }
+        } catch (Exception ignored) {
+            throw new IllegalStateException("Schedule entry is not assigned to a room.");
+        }
+
+        throw new IllegalStateException("Schedule entry is not assigned to a room.");
+    }
+
     public boolean overlaps(LocalDate dateFrom, LocalDate dateTo) {
         validateDateRange(dateFrom, dateTo);
         return this.dateFrom.isBefore(dateTo) && dateFrom.isBefore(this.dateTo);

@@ -65,21 +65,29 @@ public class HotelObject extends ObjectPlusPlus {
 
         List<Room> availableRooms = new ArrayList<>();
 
-        try {
-            ObjectPlusPlus[] rooms = getLinks("owns");
-
-            for (ObjectPlusPlus object : rooms) {
-                Room room = (Room) object;
-
-                if (room.isAvailable(from, to)) {
-                    availableRooms.add(room);
-                }
+        for (Room room : getRooms()) {
+            if (room.isAvailable(from, to)) {
+                availableRooms.add(room);
             }
-        } catch (Exception ignored) {
-            return availableRooms;
         }
 
         return availableRooms;
+    }
+
+    public List<Room> getRooms() {
+        List<Room> rooms = new ArrayList<>();
+
+        try {
+            ObjectPlusPlus[] links = getLinks("owns");
+
+            for (ObjectPlusPlus object : links) {
+                rooms.add((Room) object);
+            }
+        } catch (Exception ignored) {
+            return rooms;
+        }
+
+        return rooms;
     }
 
     public String getName() {

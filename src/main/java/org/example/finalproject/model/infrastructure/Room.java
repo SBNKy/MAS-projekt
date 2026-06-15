@@ -5,6 +5,8 @@ import org.example.finalproject.util.ObjectPlusPlus;
 
 import java.io.Serial;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class Room extends ObjectPlusPlus {
     @Serial
@@ -33,21 +35,43 @@ public abstract class Room extends ObjectPlusPlus {
     public boolean isAvailable(LocalDate dateFrom, LocalDate dateTo) {
         ScheduleEntry.validateDateRange(dateFrom, dateTo);
 
-        try {
-            ObjectPlusPlus[] entries = getLinks("scheduleEntries");
-
-            for (ObjectPlusPlus object : entries) {
-                ScheduleEntry entry = (ScheduleEntry) object;
-
-                if (entry.overlaps(dateFrom, dateTo)) {
-                    return false;
-                }
+        for (ScheduleEntry entry : getScheduleEntries()) {
+            if (entry.overlaps(dateFrom, dateTo)) {
+                return false;
             }
-        } catch (Exception ignored) {
-            return true;
         }
 
         return true;
+    }
+
+    public HotelObject getHotelObject() {
+        try {
+            ObjectPlusPlus[] links = getLinks("belongsTo");
+
+            if (links.length > 0) {
+                return (HotelObject) links[0];
+            }
+        } catch (Exception ignored) {
+            throw new IllegalStateException("Room is not assigned to a hotel object.");
+        }
+
+        throw new IllegalStateException("Room is not assigned to a hotel object.");
+    }
+
+    public List<ScheduleEntry> getScheduleEntries() {
+        List<ScheduleEntry> entries = new ArrayList<>();
+
+        try {
+            ObjectPlusPlus[] links = getLinks("scheduleEntries");
+
+            for (ObjectPlusPlus object : links) {
+                entries.add((ScheduleEntry) object);
+            }
+        } catch (Exception ignored) {
+            return entries;
+        }
+
+        return entries;
     }
 
     public int getRoomNumber() {

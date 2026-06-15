@@ -77,19 +77,7 @@ public class Receptionist extends ObjectPlusPlus {
             throw new IllegalArgumentException("Hotel object cannot be null.");
         }
 
-        List<Room> rooms = new ArrayList<>();
-
-        try {
-            ObjectPlusPlus[] links = hotelObject.getLinks("owns");
-
-            for (ObjectPlusPlus object : links) {
-                rooms.add((Room) object);
-            }
-        } catch (Exception ignored) {
-            return rooms;
-        }
-
-        return rooms;
+        return hotelObject.getRooms();
     }
 
     public List<Room> findResources(HotelObject hotelObject, LocalDate dateFrom, LocalDate dateTo) {
@@ -98,6 +86,22 @@ public class Receptionist extends ObjectPlusPlus {
         }
 
         return hotelObject.findAvailableRooms(dateFrom, dateTo);
+    }
+
+    public List<Reservation> getHandledReservations() {
+        List<Reservation> reservations = new ArrayList<>();
+
+        try {
+            ObjectPlusPlus[] links = getLinks("handledReservations");
+
+            for (ObjectPlusPlus object : links) {
+                reservations.add((Reservation) object);
+            }
+        } catch (Exception ignored) {
+            return reservations;
+        }
+
+        return reservations;
     }
 
     public String getName() {

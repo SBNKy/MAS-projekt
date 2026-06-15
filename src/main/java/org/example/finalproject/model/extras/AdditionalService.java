@@ -3,6 +3,8 @@ package org.example.finalproject.model.extras;
 import org.example.finalproject.util.ObjectPlusPlus;
 
 import java.io.Serial;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class AdditionalService extends ObjectPlusPlus {
     @Serial
@@ -35,5 +37,21 @@ public abstract class AdditionalService extends ObjectPlusPlus {
         }
 
         this.price = price;
+    }
+
+    public List<OrderItem> getOrderItems() {
+        List<OrderItem> orderItems = new ArrayList<>();
+
+        try {
+            ObjectPlusPlus[] links = getLinks("includedIn");
+
+            for (ObjectPlusPlus object : links) {
+                orderItems.add((OrderItem) object);
+            }
+        } catch (Exception ignored) {
+            return orderItems;
+        }
+
+        return orderItems;
     }
 }

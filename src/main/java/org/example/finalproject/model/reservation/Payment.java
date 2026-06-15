@@ -19,9 +19,30 @@ public class Payment extends ObjectPlusPlus {
         if (amount < 0) {
             throw new IllegalArgumentException("Amount must be a positive number");
         }
+        if (postingDate == null) {
+            throw new IllegalArgumentException("Posting date cannot be null");
+        }
+        if (paymentMethod == null) {
+            throw new IllegalArgumentException("Payment method cannot be null");
+        }
+
         this.amount = amount;
         this.postingDate = postingDate;
         this.paymentMethod = paymentMethod;
+    }
+
+    public Reservation getReservation() {
+        try {
+            ObjectPlusPlus[] links = getLinks("reservation");
+
+            if (links.length > 0) {
+                return (Reservation) links[0];
+            }
+        } catch (Exception ignored) {
+            throw new IllegalStateException("Payment is not assigned to a reservation.");
+        }
+
+        throw new IllegalStateException("Payment is not assigned to a reservation.");
     }
 
     public double getAmount() {
