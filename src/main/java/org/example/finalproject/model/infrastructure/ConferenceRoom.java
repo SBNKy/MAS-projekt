@@ -12,14 +12,22 @@ public class ConferenceRoom extends Room {
     public ConferenceRoom(int roomNumber, int floor, int area, double hourlyRate, int capacity,
                           HotelObject hotelObject) {
         super(roomNumber, floor, area, hotelObject);
-        changeHourlyRate(hourlyRate);
+        setHourlyRate(hourlyRate);
         this.capacity = capacity;
     }
 
-    public void changeHourlyRate(double newHourlyRate) {
+    public double getHourlyRate() {
+        return hourlyRate;
+    }
+
+    public void setHourlyRate(double newHourlyRate) {
         if (hourlyRate < 0) {
             throw new IllegalArgumentException("Hourly rate can't be lower than 0.");
         }
         hourlyRate = newHourlyRate;
+    }
+
+    public int getCapacity() {
+        return capacity;
     }
 }

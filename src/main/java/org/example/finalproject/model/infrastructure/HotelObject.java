@@ -47,6 +47,18 @@ public class HotelObject extends ObjectPlusPlus {
         throw new UnsupportedOperationException();
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public int getStarRating() {
+        return starRating;
+    }
+
     @Override
     public void destroy() {
         try {

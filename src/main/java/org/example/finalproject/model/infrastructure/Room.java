@@ -27,4 +27,16 @@ public abstract class Room extends ObjectPlusPlus {
     public void destroy() {
         super.destroy();
     }
+
+    public int getRoomNumber() {
+        return roomNumber;
+    }
+
+    public int getFloor() {
+        return floor;
+    }
+
+    public int getArea() {
+        return area;
+    }
 }

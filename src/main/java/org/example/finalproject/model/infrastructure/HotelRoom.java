@@ -15,14 +15,26 @@ public class HotelRoom extends Room {
         super(roomNumber, floor, area, hotelObject);
         this.numberOfBeds = numberOfBeds;
         this.roomStandard = roomStandard;
-        changeDailyRate(dailyRate);
+        setDailyRate(dailyRate);
     }
 
-    public void changeDailyRate(double newDailyRate) {
+    public double getDailyRate() {
+        return dailyRate;
+    }
+
+    public void setDailyRate(double newDailyRate) {
         if (newDailyRate < 0) {
             throw new IllegalArgumentException("Daily rate can't be lower than 0.");
         }
 
         dailyRate = newDailyRate;
+    }
+
+    public int getNumberOfBeds() {
+        return numberOfBeds;
+    }
+
+    public RoomStandard getRoomStandard() {
+        return roomStandard;
     }
 }
