@@ -73,6 +73,20 @@ public class Reservation extends ObjectPlusPlus {
         return orderItem;
     }
 
+    public void startStay() {
+        if (reservationStatus != ReservationStatus.CONFIRMED) {
+            throw new IllegalStateException("Reservation must be confirmed to start stay.");
+        }
+        reservationStatus = ReservationStatus.ONGOING;
+    }
+
+    public void endStay() {
+        if (reservationStatus != ReservationStatus.ONGOING) {
+            throw new IllegalStateException("Reservation must be ongoing to end stay.");
+        }
+        reservationStatus = ReservationStatus.COMPLETED;
+    }
+
     public Client getClient() {
         try {
             ObjectPlusPlus[] links = getLinks("client");
@@ -167,5 +181,19 @@ public class Reservation extends ObjectPlusPlus {
 
     public String getComment() {
         return comment;
+    }
+
+    @Override
+    public void destroy() {
+        for (Payment payment : getPayments()) {
+            payment.destroy();
+        }
+        for (OrderItem orderItem : getOrderItems()) {
+            orderItem.destroy();
+        }
+        for (ScheduleEntry scheduleEntry : getScheduleEntries()) {
+            scheduleEntry.destroy();
+        }
+        super.destroy();
     }
 }
