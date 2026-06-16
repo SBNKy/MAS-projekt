@@ -85,4 +85,6 @@ public abstract class Room extends ObjectPlusPlus {
     public int getArea() {
         return area;
     }
+
+
 }

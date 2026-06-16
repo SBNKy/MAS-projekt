@@ -64,7 +64,6 @@ public class HotelObject extends ObjectPlusPlus {
         ScheduleEntry.validateDateRange(from, to);
 
         List<Room> availableRooms = new ArrayList<>();
-
         for (Room room : getRooms()) {
             if (room.isAvailable(from, to)) {
                 availableRooms.add(room);

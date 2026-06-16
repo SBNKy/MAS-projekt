@@ -1,15 +1,21 @@
 package org.example.finalproject.controller;
 
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 import org.example.finalproject.model.Client;
 import org.example.finalproject.util.ObjectPlus;
+
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 public class ClientController {
     @FXML private TextField nipField;
@@ -17,17 +23,19 @@ public class ClientController {
     @FXML private TextField addressField;
     @FXML private TextField phoneField;
     @FXML private TextField emailField;
+    @FXML private Button createClientButton;
 
     @FXML private TableView<Client> clientsTable;
     @FXML private TableColumn<Client, String> nipColumn;
     @FXML private TableColumn<Client, String> companyColumn;
     @FXML private TableColumn<Client, String> phoneColumn;
+    @FXML private Button continueButton;
 
     @FXML
     public void initialize() {
-        nipColumn.setCellValueFactory(new PropertyValueFactory<>("NIP"));
-        companyColumn.setCellValueFactory(new PropertyValueFactory<>("companyName"));
-        phoneColumn.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
+        nipColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNIP()));
+        companyColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getCompanyName()));
+        phoneColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getPhoneNumber()));
 
         refreshTable();
     }
@@ -96,9 +104,25 @@ public class ClientController {
     @FXML
     private void handleContinue() {
         Client selectedClient = clientsTable.getSelectionModel().getSelectedItem();
-
         if (selectedClient == null) {
             showAlert(Alert.AlertType.ERROR, "Selection required", "Select a client from the table to continue.");
+            return;
+        }
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/finalproject/room-selection-view" +
+                                                                              ".fxml"));
+            Parent root = loader.load();
+
+            ReservationController reservationController = loader.getController();
+            reservationController.setClient(selectedClient);
+
+            Stage stage = (Stage) continueButton.getScene().getWindow();
+            stage.setScene(new Scene(root, 1024, 768));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Critical error!", "Couldn't proceed with reservation.");
         }
     }
 
