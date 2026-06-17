@@ -303,11 +303,11 @@ public class ReservationController {
     }
 
     private void printDebugInfo() {
-        System.out.println("\n--- AKTUALNY STAN EKSTENSJI REZERWACJI ---");
+        System.out.println("\n--- RESERVATION EXTENT ---");
         try {
-            org.example.finalproject.util.ObjectPlus.showExtent(Reservation.class);
+            ObjectPlus.showExtent(Reservation.class);
         } catch (Exception e) {
-            System.out.println("Ekstensja jest pusta lub wystąpił błąd: " + e.getMessage());
+            System.out.println("Extent is empty or an error occured: " + e.getMessage());
         }
         System.out.println("------------------------------------------\n");
     }

@@ -67,7 +67,7 @@ public class Reservation extends ObjectPlusPlus {
     }
 
     public OrderItem addOrderItem(int quantity, AdditionalService service) throws Exception {
-        return addOrderItem(quantity, "None" ,service);
+        return addOrderItem(quantity, "None", service);
     }
 
     public OrderItem addOrderItem(int quantity, String comment, AdditionalService service) throws Exception {
@@ -203,36 +203,37 @@ public class Reservation extends ObjectPlusPlus {
 
     @Override
     public String toString() {
-        String clientName = "Unknown (association error)";
+        String clientName = "Unknown";
         try {
             clientName = getClient().getCompanyName();
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
 
         StringBuilder sb = new StringBuilder();
-        sb.append(String.format("=== RESERVATION ===\n"));
+        sb.append("=== RESERVATION ===\n");
         sb.append(String.format("Status: %s | Client: %s | Created: %s\n",
                                 getReservationStatus(), clientName, getSubmissionDate()));
 
         sb.append("Assigned rooms:\n");
         List<ScheduleEntry> entries = getScheduleEntries();
-        if (entries.isEmpty()) {
-            sb.append("  - No rooms assigned\n");
-        } else {
-            for (ScheduleEntry entry : entries) {
-                try {
-                    Room room = entry.getRoom();
-                    String hotelName = "Unknown hotel";
-                    try {
-                        hotelName = room.getHotelObject().getName();
-                    } catch (Exception ignored) {}
 
-                    sb.append(String.format("  - Hotel: %s | Room no. %d (Floor: %d) | From: %s To: %s\n",
-                                            hotelName, room.getRoomNumber(), room.getFloor(), entry.getDateFrom(), entry.getDateTo()));
-                } catch (Exception e) {
-                    sb.append("  - Error reading room association\n");
+        for (ScheduleEntry entry : entries) {
+            try {
+                Room room = entry.getRoom();
+                String hotelName = "Unknown hotel";
+                try {
+                    hotelName = room.getHotelObject().getName();
+                } catch (Exception ignored) {
                 }
+
+                sb.append(String.format("  - Hotel: %s | Room no. %d (Floor: %d) | From: %s To: %s\n",
+                                        hotelName, room.getRoomNumber(), room.getFloor(), entry.getDateFrom(),
+                                        entry.getDateTo()));
+            } catch (Exception e) {
+                sb.append("  - Error reading room association\n");
             }
         }
+
 
         sb.append("Selected additional services:\n");
         List<OrderItem> items = getOrderItems();
