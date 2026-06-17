@@ -45,7 +45,7 @@ public class Reservation extends ObjectPlusPlus {
         addLink("receptionist", "handledReservations", receptionist);
     }
 
-    public ScheduleEntry reserveRoom(Room room, LocalDate dateFrom, LocalDate dateTo) {
+    public void reserveRoom(Room room, LocalDate dateFrom, LocalDate dateTo) {
         if (reservationStatus == ReservationStatus.CANCELLED) {
             throw new IllegalStateException("Cannot add rooms to a cancelled reservation.");
         }
@@ -56,7 +56,7 @@ public class Reservation extends ObjectPlusPlus {
             throw new IllegalArgumentException("Room is not available in the selected period.");
         }
 
-        return new ScheduleEntry(this, room, dateFrom, dateTo);
+        new ScheduleEntry(this, room, dateFrom, dateTo);
     }
 
     public Payment addPayment(double amount, LocalDate postingDate, PaymentMethod paymentMethod) throws Exception {
@@ -66,15 +66,14 @@ public class Reservation extends ObjectPlusPlus {
         return payment;
     }
 
-    public OrderItem addOrderItem(int quantity, AdditionalService service) throws Exception {
-        return addOrderItem(quantity, "None", service);
+    public void addOrderItem(int quantity, AdditionalService service) throws Exception {
+        addOrderItem(quantity, "None", service);
     }
 
-    public OrderItem addOrderItem(int quantity, String comment, AdditionalService service) throws Exception {
+    public void addOrderItem(int quantity, String comment, AdditionalService service) throws Exception {
         OrderItem orderItem = new OrderItem(quantity, comment, service);
         addPart("orderItems", "reservation", orderItem);
 
-        return orderItem;
     }
 
     public void startStay() {
@@ -171,20 +170,40 @@ public class Reservation extends ObjectPlusPlus {
         return reservationStatus;
     }
 
+    public void setReservationStatus(ReservationStatus reservationStatus) {
+        this.reservationStatus = reservationStatus;
+    }
+
     public LocalDate getSubmissionDate() {
         return submissionDate;
+    }
+
+    public void setSubmissionDate(LocalDate submissionDate) {
+        this.submissionDate = submissionDate;
     }
 
     public String getInvoiceNumber() {
         return invoiceNumber;
     }
 
+    public void setInvoiceNumber(String invoiceNumber) {
+        this.invoiceNumber = invoiceNumber;
+    }
+
     public LocalDate getInvoiceCreationDate() {
         return invoiceCreationDate;
     }
 
+    public void setInvoiceCreationDate(LocalDate invoiceCreationDate) {
+        this.invoiceCreationDate = invoiceCreationDate;
+    }
+
     public String getComment() {
         return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
     @Override

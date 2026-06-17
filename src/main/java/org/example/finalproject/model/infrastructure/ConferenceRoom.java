@@ -30,4 +30,8 @@ public class ConferenceRoom extends Room {
     public int getCapacity() {
         return capacity;
     }
+
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
+    }
 }

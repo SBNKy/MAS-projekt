@@ -18,22 +18,35 @@ import java.util.List;
 
 public class AdditionalServicesController {
 
-    @FXML private TableView<AdditionalService> availableServicesTable;
-    @FXML private TableColumn<AdditionalService, String> serviceTypeColumn;
-    @FXML private TableColumn<AdditionalService, String> serviceNameColumn;
-    @FXML private TableColumn<AdditionalService, Double> servicePriceColumn;
+    @FXML
+    private TableView<AdditionalService> availableServicesTable;
+    @FXML
+    private TableColumn<AdditionalService, String> serviceTypeColumn;
+    @FXML
+    private TableColumn<AdditionalService, String> serviceNameColumn;
+    @FXML
+    private TableColumn<AdditionalService, Double> servicePriceColumn;
 
-    @FXML private TableView<AdditionalServiceDTO> selectedServicesTable;
-    @FXML private TableColumn<AdditionalServiceDTO, String> selectedTypeColumn;
-    @FXML private TableColumn<AdditionalServiceDTO, String> selectedNameColumn;
-    @FXML private TableColumn<AdditionalServiceDTO, Integer> selectedQuantityColumn;
-    @FXML private TableColumn<AdditionalServiceDTO, String> selectedPriceColumn;
+    @FXML
+    private TableView<AdditionalServiceDTO> selectedServicesTable;
+    @FXML
+    private TableColumn<AdditionalServiceDTO, String> selectedTypeColumn;
+    @FXML
+    private TableColumn<AdditionalServiceDTO, String> selectedNameColumn;
+    @FXML
+    private TableColumn<AdditionalServiceDTO, Integer> selectedQuantityColumn;
+    @FXML
+    private TableColumn<AdditionalServiceDTO, String> selectedPriceColumn;
 
-    @FXML private TextField quantityField;
-    @FXML private Button addButton;
+    @FXML
+    private TextField quantityField;
+    @FXML
+    private Button addButton;
 
-    @FXML private Button cancelButton;
-    @FXML private Button saveButton;
+    @FXML
+    private Button cancelButton;
+    @FXML
+    private Button saveButton;
 
     private ObservableList<AdditionalServiceDTO> chosenServicesList = FXCollections.observableArrayList();
     private boolean isConfirmed = false;
@@ -53,7 +66,8 @@ public class AdditionalServicesController {
             return new SimpleStringProperty("Other");
         });
 
-        serviceNameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getServiceName()));
+        serviceNameColumn.setCellValueFactory(
+                cellData -> new SimpleStringProperty(cellData.getValue().getServiceName()));
         servicePriceColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getPrice()));
     }
 
@@ -64,8 +78,10 @@ public class AdditionalServicesController {
             if (service instanceof MultimediaEquipment) return new SimpleStringProperty("Multimedia Equipment");
             return new SimpleStringProperty("Other");
         });
-        selectedNameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().service().getServiceName()));
-        selectedQuantityColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().quantity()));
+        selectedNameColumn.setCellValueFactory(
+                cellData -> new SimpleStringProperty(cellData.getValue().service().getServiceName()));
+        selectedQuantityColumn.setCellValueFactory(
+                cellData -> new SimpleObjectProperty<>(cellData.getValue().quantity()));
         selectedPriceColumn.setCellValueFactory(cellData -> {
             double total = cellData.getValue().service().getPrice() * cellData.getValue().quantity();
             return new SimpleStringProperty(String.format("%.2f", total));
@@ -123,7 +139,7 @@ public class AdditionalServicesController {
         for (int i = 0; i < chosenServicesList.size(); i++) {
             AdditionalServiceDTO existingDTO = chosenServicesList.get(i);
             if (existingDTO.service().equals(selectedService)) {
-                int qty =  existingDTO.quantity() + quantity;
+                int qty = existingDTO.quantity() + quantity;
                 chosenServicesList.set(i, new AdditionalServiceDTO(selectedService, Math.min(qty, 10)));
                 quantityField.clear();
                 return;

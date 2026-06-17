@@ -34,7 +34,15 @@ public class HotelRoom extends Room {
         return numberOfBeds;
     }
 
+    public void setNumberOfBeds(int numberOfBeds) {
+        this.numberOfBeds = numberOfBeds;
+    }
+
     public RoomStandard getRoomStandard() {
         return roomStandard;
+    }
+
+    public void setRoomStandard(RoomStandard roomStandard) {
+        this.roomStandard = roomStandard;
     }
 }

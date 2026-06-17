@@ -27,10 +27,6 @@ public abstract class Room extends ObjectPlusPlus {
         this.area = area;
     }
 
-    @Override
-    public void destroy() {
-        super.destroy();
-    }
 
     public boolean isAvailable(LocalDate dateFrom, LocalDate dateTo) {
         ScheduleEntry.validateDateRange(dateFrom, dateTo);
@@ -78,13 +74,29 @@ public abstract class Room extends ObjectPlusPlus {
         return roomNumber;
     }
 
+    public void setRoomNumber(int roomNumber) {
+        this.roomNumber = roomNumber;
+    }
+
     public int getFloor() {
         return floor;
+    }
+
+    public void setFloor(int floor) {
+        this.floor = floor;
     }
 
     public int getArea() {
         return area;
     }
 
+    public void setArea(int area) {
+        this.area = area;
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+    }
 
 }

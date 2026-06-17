@@ -6,9 +6,13 @@ import org.example.finalproject.model.extras.CateringVariant;
 import org.example.finalproject.model.extras.MultimediaEquipment;
 import org.example.finalproject.model.infrastructure.HotelObject;
 import org.example.finalproject.model.infrastructure.RoomStandard;
+import org.example.finalproject.model.reservation.Reservation;
 import org.example.finalproject.model.user.Receptionist;
 
-import java.io.*;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -54,9 +58,14 @@ public final class DataManager {
         try (var ois  = new ObjectInputStream(new FileInputStream(path.toFile()))) {
             ObjectPlus.readExtents(ois);
             System.out.println("Data read from file successfully!");
+
+            Iterable<Reservation> currentReservations = ObjectPlus.getExtent(Reservation.class);
+            currentReservations.forEach(System.out::println);
+
         } catch (Exception e) {
             System.err.println("Error: Could not read file: " + e.getMessage());
         }
+
     }
 
     private static void generateData() {

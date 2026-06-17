@@ -31,10 +31,6 @@ public class ScheduleEntry extends ObjectPlusPlus {
         addLink("room", "scheduleEntries", room);
     }
 
-    public boolean checkAvailability(LocalDate dateFrom, LocalDate dateTo) {
-        return !overlaps(dateFrom, dateTo);
-    }
-
     public Reservation getReservation() {
         try {
             ObjectPlusPlus[] links = getLinks("reservation");

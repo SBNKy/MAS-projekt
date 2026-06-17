@@ -23,19 +23,15 @@ public class HotelObject extends ObjectPlusPlus {
         setStarRating(starRating);
     }
 
-    public HotelRoom addHotelRoom(int number, int floor, int area, double dailyRate, int numberOfBeds,
+    public void addHotelRoom(int number, int floor, int area, double dailyRate, int numberOfBeds,
                                   RoomStandard roomStandard) throws Exception {
         HotelRoom room = new HotelRoom(number, floor, area, dailyRate, numberOfBeds, roomStandard, this);
         this.addPart("owns", "belongsTo", room);
-
-        return room;
     }
 
-    public ConferenceRoom addConferenceRoom(int number, int floor, int area, double hourlyRate, int capacity) throws Exception {
+    public void addConferenceRoom(int number, int floor, int area, double hourlyRate, int capacity) throws Exception {
         ConferenceRoom room = new ConferenceRoom(number, floor, area, hourlyRate, capacity, this);
         this.addPart("owns", "belongsTo", room);
-
-        return room;
     }
 
     public int calculateOccupany() {
@@ -116,6 +112,8 @@ public class HotelObject extends ObjectPlusPlus {
 
         this.starRating = starRating;
     }
+
+
 
     @Override
     public void destroy() {

@@ -8,6 +8,9 @@ module org.example.finalproject {
     opens org.example.finalproject.model to javafx.fxml;
     exports org.example.finalproject.model;
 
+    opens org.example.finalproject.model.reservation to javafx.fxml;
+    exports org.example.finalproject.model.reservation;
+
     opens org.example.finalproject.model.extras to javafx.fxml;
     exports org.example.finalproject.model.extras;
 
