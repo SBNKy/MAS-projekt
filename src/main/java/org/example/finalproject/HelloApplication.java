@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.example.finalproject.util.DataManager;
 
 import java.io.IOException;
 
@@ -16,5 +17,11 @@ public class HelloApplication extends Application {
         stage.setTitle("Reservation system");
         stage.setScene(scene);
         stage.show();
+    }
+
+    @Override
+    public void stop() {
+        System.out.println("Application stopping, saving data to file...");
+        DataManager.saveToFile();
     }
 }

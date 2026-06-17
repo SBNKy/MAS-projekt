@@ -213,11 +213,6 @@ public class ReservationController {
     }
 
     @FXML
-    private void handleCancel() {
-        System.out.println("Cancel button pressed");
-    }
-
-    @FXML
     private void handleContinue() {
         List<Room> selectedRooms = new ArrayList<>();
         for (var entry : roomSelectionMap.entrySet()) {
@@ -271,6 +266,21 @@ public class ReservationController {
         } catch (Exception e) {
             e.printStackTrace();
             showReservationError("An unexpected error occurred: " + e.getMessage());
+        }
+    }
+
+    @FXML
+    private void handleCancel() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/finalproject/reservation-view.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = (Stage) cancelButton.getScene().getWindow();
+            stage.setScene(new Scene(root, 1024, 768));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("Couldn't load reservation view.");
         }
     }
 

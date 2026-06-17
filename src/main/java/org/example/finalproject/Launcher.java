@@ -1,56 +1,49 @@
 package org.example.finalproject;
 
 import javafx.application.Application;
-import org.example.finalproject.model.Client;
-import org.example.finalproject.model.extras.Catering;
-import org.example.finalproject.model.extras.CateringVariant;
-import org.example.finalproject.model.extras.MultimediaEquipment;
-import org.example.finalproject.model.infrastructure.HotelObject;
-import org.example.finalproject.model.infrastructure.RoomStandard;
-import org.example.finalproject.model.user.Receptionist;
-
-import java.time.LocalDate;
+import org.example.finalproject.util.DataManager;
 
 public class Launcher {
     public static void main(String[] args) {
-        generateData();
+//        generateData();
+        DataManager.loadFromFile();
         Application.launch(HelloApplication.class, args);
     }
 
-    private static void generateData() {
-        try {
-            new Client("1234567890", "Budomax", "Kokosowa 20", "123456789", "budomax@gmail.com");
-            new Client("0987654321", "Sylphide", "Poprzeczna 96", "987654321", "sylphide@gmail.com");
-
-            new Receptionist("Jan", "Kowalski", "kowal123", "password", LocalDate.now());
-
-            HotelObject hotelGrand = new HotelObject("Grand Plaza", "Warszawa, Marszałkowska", 4);
-            HotelObject hotelSeaside = new HotelObject("Seaside Resort", "Sopot, Plażowa", 3);
-
-            hotelGrand.addHotelRoom(5, 2, 45, 500, 3, RoomStandard.STANDARD);
-            hotelGrand.addHotelRoom(12, 3, 54, 700, 4, RoomStandard.PREMIUM);
-            hotelGrand.addHotelRoom(1, 1, 34, 400, 1, RoomStandard.STANDARD);
-            hotelGrand.addConferenceRoom(7, 6, 98, 700, 50);
-            hotelGrand.addConferenceRoom(8, 4, 77, 600, 40);
-
-            hotelSeaside.addHotelRoom(5, 2, 65, 500, 2, RoomStandard.STANDARD);
-            hotelSeaside.addHotelRoom(12, 3, 54, 700, 4, RoomStandard.PREMIUM);
-            hotelSeaside.addHotelRoom(1, 1, 34, 400, 1, RoomStandard.STANDARD);
-            hotelSeaside.addConferenceRoom(7, 6, 98, 700, 50);
-            hotelSeaside.addConferenceRoom(8, 4, 77, 600, 40);
-
-            new Catering("Coffee Break", 45.0, CateringVariant.NORMAL, false);
-            new Catering("Vegan Lunch", 120.0, CateringVariant.VEGAN, true);
-            new Catering("Banquet Dinner", 250.0, CateringVariant.NORMAL, true);
-            new Catering("Fruit Basket", 60.0, CateringVariant.VEGAN, false);
-
-            new MultimediaEquipment("4K Projector", 150.0, 100293847L, 500.0);
-            new MultimediaEquipment("HD Projector", 80.0, 100293848L, 300.0);
-            new MultimediaEquipment("Wireless Mics", 100.0, 556677881L, 200.0);
-            new MultimediaEquipment("Sound System", 350.0, 998877665L, 1000.0);
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.err.println("Error while generating data!\n" + e.getMessage());
-        }
-    }
+//    private static void generateData() {
+//        try {
+//            new Client("1234567890", "Budomax", "Kokosowa 20", "123456789", "budomax@gmail.com");
+//            new Client("0987654321", "Sylphide", "Poprzeczna 96", "987654321", "sylphide@gmail.com");
+//
+//            new Receptionist("Jan", "Kowalski", "kowal123", "password", LocalDate.now());
+//
+//            HotelObject hotelGrand = new HotelObject("Grand Plaza", "Warszawa, Marszałkowska", 4);
+//            HotelObject hotelSeaside = new HotelObject("Seaside Resort", "Sopot, Plażowa", 3);
+//
+//            hotelGrand.addHotelRoom(5, 2, 45, 500, 3, RoomStandard.STANDARD);
+//            hotelGrand.addHotelRoom(12, 3, 54, 700, 4, RoomStandard.PREMIUM);
+//            hotelGrand.addHotelRoom(1, 1, 34, 400, 1, RoomStandard.STANDARD);
+//            hotelGrand.addConferenceRoom(7, 6, 98, 700, 50);
+//            hotelGrand.addConferenceRoom(8, 4, 77, 600, 40);
+//
+//            hotelSeaside.addHotelRoom(5, 2, 65, 500, 2, RoomStandard.STANDARD);
+//            hotelSeaside.addHotelRoom(12, 3, 54, 700, 4, RoomStandard.PREMIUM);
+//            hotelSeaside.addHotelRoom(1, 1, 34, 400, 1, RoomStandard.STANDARD);
+//            hotelSeaside.addConferenceRoom(7, 6, 98, 700, 50);
+//            hotelSeaside.addConferenceRoom(8, 4, 77, 600, 40);
+//
+//            new Catering("Coffee Break", 45.0, CateringVariant.NORMAL, false);
+//            new Catering("Vegan Lunch", 120.0, CateringVariant.VEGAN, true);
+//            new Catering("Banquet Dinner", 250.0, CateringVariant.NORMAL, true);
+//            new Catering("Fruit Basket", 60.0, CateringVariant.VEGAN, false);
+//
+//            new MultimediaEquipment("4K Projector", 150.0, 100293847L, 500.0);
+//            new MultimediaEquipment("HD Projector", 80.0, 100293848L, 300.0);
+//            new MultimediaEquipment("Wireless Mics", 100.0, 556677881L, 200.0);
+//            new MultimediaEquipment("Sound System", 350.0, 998877665L, 1000.0);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            System.err.println("Error while generating data!\n" + e.getMessage());
+//        }
+//    }
 }

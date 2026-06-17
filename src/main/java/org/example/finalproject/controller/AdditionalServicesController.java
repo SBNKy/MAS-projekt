@@ -125,7 +125,8 @@ public class AdditionalServicesController {
         for (int i = 0; i < chosenServicesList.size(); i++) {
             AdditionalServiceDTO existingDTO = chosenServicesList.get(i);
             if (existingDTO.service().equals(selectedService)) {
-                chosenServicesList.set(i, new AdditionalServiceDTO(selectedService, existingDTO.quantity() + quantity));
+                int qty =  existingDTO.quantity() + quantity;
+                chosenServicesList.set(i, new AdditionalServiceDTO(selectedService, Math.min(qty, 10)));
                 quantityField.clear();
                 return;
             }

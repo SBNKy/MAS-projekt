@@ -1,5 +1,6 @@
 package org.example.finalproject.controller;
 
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -79,7 +80,7 @@ public class ClientController {
 
     private void validateFormFields(String nip, String companyName, String address, String phoneNumber, String email) {
         if (nip == null || nip.isBlank() || !nip.trim().matches("\\d{10}")) {
-            throw new IllegalArgumentException("Proper NIP is required.");
+            throw new IllegalArgumentException("Valid NIP is required.");
         }
         if (companyName == null || companyName.isBlank()) {
             throw new IllegalArgumentException("Company name is required.");
@@ -87,11 +88,11 @@ public class ClientController {
         if (address == null || address.isBlank()) {
             throw new IllegalArgumentException("Address is required.");
         }
-        if (phoneNumber == null || phoneNumber.isBlank()) {
-            throw new IllegalArgumentException("Phone number is required.");
+        if (phoneNumber == null || phoneNumber.isBlank() || !phoneNumber.matches("^[1-9]\\d{8}$")) {
+            throw new IllegalArgumentException("Valid 9 digit phone number is required.");
         }
-        if (email == null || email.isBlank()) {
-            throw new IllegalArgumentException("Email is required.");
+        if (email == null || email.isBlank() || !email.matches("^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$")) {
+            throw new IllegalArgumentException("Valid email is required.");
         }
     }
 
@@ -128,6 +129,11 @@ public class ClientController {
         }
     }
 
+    @FXML
+    private void handleCancel() {
+        Platform.exit();
+    }
+
     private void showAlert(Alert.AlertType type, String title, String message) {
         Alert alert = new Alert(type);
         alert.setTitle(title);
@@ -136,8 +142,4 @@ public class ClientController {
         alert.showAndWait();
     }
 
-    @FXML
-    private void handleCancel() {
-
-    }
 }
