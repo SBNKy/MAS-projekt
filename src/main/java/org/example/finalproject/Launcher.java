@@ -24,7 +24,7 @@ public class Launcher {
             HotelObject hotelGrand = new HotelObject("Grand Plaza", "Warszawa, Marszałkowska", 4);
             HotelObject hotelSeaside = new HotelObject("Seaside Resort", "Sopot, Plażowa", 3);
 
-            hotelGrand.addHotelRoom(5, 2, 65, 500, 3, RoomStandard.STANDARD);
+            hotelGrand.addHotelRoom(5, 2, 45, 500, 3, RoomStandard.STANDARD);
             hotelGrand.addHotelRoom(12, 3, 54, 700, 4, RoomStandard.PREMIUM);
             hotelGrand.addHotelRoom(1, 1, 34, 400, 1, RoomStandard.STANDARD);
             hotelGrand.addConferenceRoom(7, 6, 98, 700, 50);

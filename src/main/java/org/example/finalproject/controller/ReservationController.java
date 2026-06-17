@@ -4,14 +4,20 @@ import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxTableCell;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import org.example.finalproject.model.Client;
 import org.example.finalproject.model.infrastructure.ConferenceRoom;
 import org.example.finalproject.model.infrastructure.HotelObject;
 import org.example.finalproject.model.infrastructure.HotelRoom;
 import org.example.finalproject.model.infrastructure.Room;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
@@ -159,7 +165,7 @@ public class ReservationController {
 
         LocalDate today = LocalDate.now();
         if (from.isBefore(today)) {
-            throw new IllegalArgumentException("\"From\" date must be after today.");
+            throw new IllegalArgumentException("\"From\" date cannot be in the past.");
         }
         if (!to.isAfter(today)) {
             throw new IllegalArgumentException("\"To\" date must be after today.");
@@ -169,17 +175,28 @@ public class ReservationController {
         }
     }
 
-    private void showFilterError(String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Filtering error!");
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
-
     @FXML
     private void handleAdditionalServices() {
-        System.out.println("Additional services button pressed");
+        boolean anyRoomSelected = roomSelectionMap.values().stream().anyMatch(BooleanProperty::get);
+        if (!anyRoomSelected) {
+            showAdditionalServicesError("At least one room has to be selected in order to add additional services.");
+            return;
+        }
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/finalproject/additional-services-view.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = new Stage();
+            stage.setTitle("Additional Services");
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.initOwner(additionalServicesButton.getScene().getWindow());
+            stage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAdditionalServicesError("Unable to load additional services view.");
+        }
     }
 
     @FXML
@@ -190,5 +207,21 @@ public class ReservationController {
     @FXML
     private void handleContinue() {
 
+    }
+
+    private void showFilterError(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Filtering error!");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    private void showAdditionalServicesError(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Additional services error!");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }
