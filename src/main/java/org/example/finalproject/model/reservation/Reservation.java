@@ -66,6 +66,10 @@ public class Reservation extends ObjectPlusPlus {
         return payment;
     }
 
+    public OrderItem addOrderItem(int quantity, AdditionalService service) throws Exception {
+        return addOrderItem(quantity, "None" ,service);
+    }
+
     public OrderItem addOrderItem(int quantity, String comment, AdditionalService service) throws Exception {
         OrderItem orderItem = new OrderItem(quantity, comment, service);
         addPart("orderItems", "reservation", orderItem);
@@ -195,5 +199,58 @@ public class Reservation extends ObjectPlusPlus {
             scheduleEntry.destroy();
         }
         super.destroy();
+    }
+
+    @Override
+    public String toString() {
+        String clientName = "Unknown (association error)";
+        try {
+            clientName = getClient().getCompanyName();
+        } catch (Exception ignored) {}
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(String.format("=== RESERVATION ===\n"));
+        sb.append(String.format("Status: %s | Client: %s | Created: %s\n",
+                                getReservationStatus(), clientName, getSubmissionDate()));
+
+        sb.append("Assigned rooms:\n");
+        List<ScheduleEntry> entries = getScheduleEntries();
+        if (entries.isEmpty()) {
+            sb.append("  - No rooms assigned\n");
+        } else {
+            for (ScheduleEntry entry : entries) {
+                try {
+                    Room room = entry.getRoom();
+                    String hotelName = "Unknown hotel";
+                    try {
+                        hotelName = room.getHotelObject().getName();
+                    } catch (Exception ignored) {}
+
+                    sb.append(String.format("  - Hotel: %s | Room no. %d (Floor: %d) | From: %s To: %s\n",
+                                            hotelName, room.getRoomNumber(), room.getFloor(), entry.getDateFrom(), entry.getDateTo()));
+                } catch (Exception e) {
+                    sb.append("  - Error reading room association\n");
+                }
+            }
+        }
+
+        sb.append("Selected additional services:\n");
+        List<OrderItem> items = getOrderItems();
+        if (items.isEmpty()) {
+            sb.append("  - No additional services\n");
+        } else {
+            for (OrderItem item : items) {
+                try {
+                    AdditionalService service = item.getAdditionalService();
+                    sb.append(String.format("  - %s | Qty: %d | Unit price: %.2f\n",
+                                            service.getServiceName(), item.getQuantity(), service.getPrice()));
+                } catch (Exception e) {
+                    sb.append("  - Error reading service association\n");
+                }
+            }
+        }
+        sb.append("===================\n");
+
+        return sb.toString();
     }
 }

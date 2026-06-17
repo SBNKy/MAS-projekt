@@ -31,6 +31,8 @@ public class ClientController {
     @FXML private TableColumn<Client, String> phoneColumn;
     @FXML private Button continueButton;
 
+    @FXML private Button cancelButton;
+
     @FXML
     public void initialize() {
         nipColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNIP()));

@@ -36,10 +36,6 @@ public class Receptionist extends ObjectPlusPlus {
         throw new UnsupportedOperationException();
     }
 
-    public void organizeStay(Client client) {
-
-    }
-
     public Reservation organizeStay(Client client, List<Room> rooms, LocalDate dateFrom, LocalDate dateTo) {
         if (client == null) {
             throw new IllegalArgumentException("Client cannot be null.");

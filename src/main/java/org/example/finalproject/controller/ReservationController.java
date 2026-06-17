@@ -12,13 +12,18 @@ import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.example.finalproject.model.Client;
+import org.example.finalproject.model.extras.AdditionalServiceDTO;
 import org.example.finalproject.model.infrastructure.ConferenceRoom;
 import org.example.finalproject.model.infrastructure.HotelObject;
 import org.example.finalproject.model.infrastructure.HotelRoom;
 import org.example.finalproject.model.infrastructure.Room;
+import org.example.finalproject.model.reservation.Reservation;
+import org.example.finalproject.model.user.Receptionist;
+import org.example.finalproject.util.ObjectPlus;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -67,6 +72,7 @@ public class ReservationController {
 
     private Client selectedClient;
     private Map<Room, BooleanProperty> roomSelectionMap = new HashMap<>();
+    private List<AdditionalServiceDTO> selectedServices = new ArrayList<>();
 
     @FXML
     public void initialize() {
@@ -77,7 +83,8 @@ public class ReservationController {
     private void initHotelTable() {
         hotelNameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getName()));
         hotelAddressColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getAddress()));
-        hotelStarsColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getStarRating()));
+        hotelStarsColumn.setCellValueFactory(
+                cellData -> new SimpleObjectProperty<>(cellData.getValue().getStarRating()));
 
         hotelsTable.getSelectionModel().selectedItemProperty().addListener(
                 (obs, oldValue, newValue) -> loadHotelRooms(newValue)
@@ -184,7 +191,8 @@ public class ReservationController {
         }
 
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/finalproject/additional-services-view.fxml"));
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/org/example/finalproject/additional-services-view.fxml"));
             Parent root = loader.load();
 
             Stage stage = new Stage();
@@ -193,6 +201,11 @@ public class ReservationController {
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.initOwner(additionalServicesButton.getScene().getWindow());
             stage.showAndWait();
+
+            AdditionalServicesController controller = loader.getController();
+            if (controller.isConfirmed()) {
+                selectedServices = controller.getChosenServices();
+            }
         } catch (IOException e) {
             e.printStackTrace();
             showAdditionalServicesError("Unable to load additional services view.");
@@ -206,22 +219,96 @@ public class ReservationController {
 
     @FXML
     private void handleContinue() {
+        List<Room> selectedRooms = new ArrayList<>();
+        for (var entry : roomSelectionMap.entrySet()) {
+            if (entry.getValue().get()) {
+                selectedRooms.add(entry.getKey());
+            }
+        }
 
+        if (selectedRooms.isEmpty()) {
+            showReservationError("At least one room has to be selected in order to create reservation.");
+            return;
+        }
+
+        LocalDate from = dateFromPicker.getValue();
+        LocalDate to = dateToPicker.getValue();
+        try {
+            validateDates(from, to);
+
+            Receptionist receptionist = null;
+            Iterable<Receptionist> receptionists = ObjectPlus.getExtent(Receptionist.class);
+            if (receptionists.iterator().hasNext()) {
+                receptionist = receptionists.iterator().next();
+            }
+
+            if (receptionist == null) {
+                showReservationError("Critical error: No receptionist available in the system.");
+                return;
+            }
+
+            Reservation reservation = receptionist.organizeStay(selectedClient, selectedRooms, from, to);
+
+            if (selectedServices != null && !selectedServices.isEmpty()) {
+                for (AdditionalServiceDTO dto : selectedServices) {
+                    reservation.addOrderItem(dto.quantity(), dto.service());
+                }
+            }
+
+            showSuccessAlert();
+
+            printDebugInfo();
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/finalproject/reservation-view.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = (Stage) continueButton.getScene().getWindow();
+            stage.setScene(new Scene(root, 1024, 768));
+            stage.show();
+
+        } catch (IllegalArgumentException e) {
+            showReservationError(e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            showReservationError("An unexpected error occurred: " + e.getMessage());
+        }
     }
 
     private void showFilterError(String message) {
+        showError("Filtering error!", message);
+    }
+
+    private void showAdditionalServicesError(String message) {
+        showError("Additional services error!", message);
+    }
+
+    private void showReservationError(String message) {
+        showError("Reservation error!", message);
+    }
+
+    private void showError(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Filtering error!");
+        alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
     }
 
-    private void showAdditionalServicesError(String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Additional services error!");
+    private void showSuccessAlert() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Success!");
         alert.setHeaderText(null);
-        alert.setContentText(message);
+        alert.setContentText("Reservation has been successfully created.");
         alert.showAndWait();
+    }
+
+    private void printDebugInfo() {
+        System.out.println("\n--- AKTUALNY STAN EKSTENSJI REZERWACJI ---");
+        try {
+            org.example.finalproject.util.ObjectPlus.showExtent(Reservation.class);
+        } catch (Exception e) {
+            System.out.println("Ekstensja jest pusta lub wystąpił błąd: " + e.getMessage());
+        }
+        System.out.println("------------------------------------------\n");
     }
 }

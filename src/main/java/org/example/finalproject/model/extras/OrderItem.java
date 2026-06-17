@@ -59,6 +59,22 @@ public class OrderItem extends ObjectPlusPlus {
         return this.quantity * getAdditionalService().getPrice();
     }
 
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
     @Override
     public void destroy() {
         super.destroy();

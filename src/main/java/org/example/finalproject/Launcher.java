@@ -2,6 +2,9 @@ package org.example.finalproject;
 
 import javafx.application.Application;
 import org.example.finalproject.model.Client;
+import org.example.finalproject.model.extras.Catering;
+import org.example.finalproject.model.extras.CateringVariant;
+import org.example.finalproject.model.extras.MultimediaEquipment;
 import org.example.finalproject.model.infrastructure.HotelObject;
 import org.example.finalproject.model.infrastructure.RoomStandard;
 import org.example.finalproject.model.user.Receptionist;
@@ -35,6 +38,16 @@ public class Launcher {
             hotelSeaside.addHotelRoom(1, 1, 34, 400, 1, RoomStandard.STANDARD);
             hotelSeaside.addConferenceRoom(7, 6, 98, 700, 50);
             hotelSeaside.addConferenceRoom(8, 4, 77, 600, 40);
+
+            new Catering("Coffee Break", 45.0, CateringVariant.NORMAL, false);
+            new Catering("Vegan Lunch", 120.0, CateringVariant.VEGAN, true);
+            new Catering("Banquet Dinner", 250.0, CateringVariant.NORMAL, true);
+            new Catering("Fruit Basket", 60.0, CateringVariant.VEGAN, false);
+
+            new MultimediaEquipment("4K Projector", 150.0, 100293847L, 500.0);
+            new MultimediaEquipment("HD Projector", 80.0, 100293848L, 300.0);
+            new MultimediaEquipment("Wireless Mics", 100.0, 556677881L, 200.0);
+            new MultimediaEquipment("Sound System", 350.0, 998877665L, 1000.0);
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println("Error while generating data!\n" + e.getMessage());

@@ -1,14 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="CONTROLLER_NAME"
-            prefHeight="400.0" prefWidth="600.0">
+<AnchorPane prefHeight="500.0" prefWidth="750.0" style="-fx-background-color: #E8F1FA;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.finalproject.controller.AdditionalServicesController">
+    <children>
+        <Label layoutX="276.0" layoutY="20.0" text="Additional services">
+            <font>
+                <Font size="24.0" />
+            </font>
+        </Label>
 
+        <Label layoutX="40.0" layoutY="70.0" text="Available services">
+            <font>
+                <Font size="16.0" />
+            </font>
+        </Label>
+
+        <TableView fx:id="availableServicesTable" layoutX="40.0" layoutY="100.0" prefHeight="300.0" prefWidth="280.0">
+            <columns>
+                <TableColumn fx:id="serviceTypeColumn" prefWidth="80.0" text="Type" />
+                <TableColumn fx:id="serviceNameColumn" prefWidth="120.0" text="Name" />
+                <TableColumn fx:id="servicePriceColumn" prefWidth="80.0" text="Price" />
+            </columns>
+        </TableView>
+
+        <Label layoutX="335.0" layoutY="200.0" text="Quantity:" />
+        <TextField fx:id="quantityField" layoutX="335.0" layoutY="220.0" prefWidth="80.0" />
+        <Button fx:id="addButton" layoutX="335.0" layoutY="260.0" mnemonicParsing="false" onAction="#handleAddService" prefWidth="80.0" text="Add &gt;&gt;" />
+
+        <Label layoutX="430.0" layoutY="70.0" text="Selected services">
+            <font>
+                <Font size="16.0" />
+            </font>
+        </Label>
+
+        <TableView fx:id="selectedServicesTable" layoutX="430.0" layoutY="100.0" prefHeight="300.0" prefWidth="280.0">
+            <columns>
+                <TableColumn fx:id="selectedTypeColumn" prefWidth="70.0" text="Type" />
+                <TableColumn fx:id="selectedNameColumn" prefWidth="90.0" text="Name" />
+                <TableColumn fx:id="selectedQuantityColumn" prefWidth="60.0" text="Qty" />
+                <TableColumn fx:id="selectedPriceColumn" prefWidth="60.0" text="Price" />
+            </columns>
+        </TableView>
+
+        <Button fx:id="cancelButton" layoutX="430.0" layoutY="430.0" mnemonicParsing="false" onAction="#handleCancel" prefHeight="35.0" prefWidth="100.0" text="Cancel">
+            <font>
+                <Font size="14.0" />
+            </font>
+        </Button>
+        <Button fx:id="saveButton" layoutX="560.0" layoutY="430.0" mnemonicParsing="false" onAction="#handleSaveAndClose" prefHeight="35.0" prefWidth="150.0" text="Save and close">
+            <font>
+                <Font size="14.0" />
+            </font>
+        </Button>
+    </children>
 </AnchorPane>
